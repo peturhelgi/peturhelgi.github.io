@@ -62,20 +62,19 @@ function rotateBlock(axis, theta) {
     rotation[axis] = (rotation[axis] + theta) % 360;
     var rad = theta * (Math.PI) / 180;
 
+    if (!multiply(axis, rad)) return;
     var canRotate = multiply(axis, rad);
-    // if (!rotateTrue) return;
-    var xOffset = 0;
-    var zOffset = -2 / 6;
-    var yOffset = cubes[0].myColor == 1 ? 20 / 6 : 21 / 6;
+
+    var xOffset = -1 / 12;
+    var zOffset = -1 / 12;
+    var yOffset = (cubes[0].myColor == 1 ? 21 / 6 : 22 / 6) - 1 / 12;
 
     var rotateArray = [0, 0, 0];
     rotateArray[axis] = 1;
 
-    if (canRotate) {
-        MV = mult(translate(-xOffset, -yOffset, -zOffset), MV);//hliðra aftur til baka
-        MV = mult(rotate(theta, rotateArray), MV);
-        MV = mult(translate(xOffset, yOffset, zOffset), MV);//hliðra kubbi núll
-    }
+    MV = mult(translate(-xOffset, -yOffset, -zOffset), MV);//hliðra aftur til baka
+    MV = mult(rotate(theta, rotateArray), MV);
+    MV = mult(translate(xOffset, yOffset, zOffset), MV);//hliðra kubbi núll
 }
 //notkun: mv=moveBlock(axis, mv);
 //fyrir: axis er stefna færslu, mv er vörpunarfylki
