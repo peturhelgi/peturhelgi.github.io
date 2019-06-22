@@ -62,8 +62,8 @@ function rotateBlock(axis, theta) {
     rotation[axis] = (rotation[axis] + theta) % 360;
     var rad = theta * (Math.PI) / 180;
 
-    if (!multiply(axis, rad)) return;
     var canRotate = multiply(axis, rad);
+    if(!canRotate) return;
 
     var xOffset = -1 / 12;
     var zOffset = -1 / 12;
