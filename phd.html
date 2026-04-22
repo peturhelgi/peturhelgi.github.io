@@ -23,6 +23,8 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  html { scroll-behavior: smooth; }
+
   body {
     background: var(--dark-bg);
     font-family: 'Fredoka', sans-serif;
@@ -291,14 +293,15 @@
 
   .crane {
     display: inline-block;
-    font-size: 1.8rem;
+    vertical-align: bottom;
+    margin-right: 2px;
     animation: craneFloat 3s ease-in-out infinite;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
   }
 
-  .crane:nth-child(1) { animation-delay: 0s; color: var(--rust-orange); }
-  .crane:nth-child(2) { animation-delay: 0.7s; color: var(--python-yellow); font-size: 1.4rem; }
-  .crane:nth-child(3) { animation-delay: 1.4s; color: var(--dna-green); font-size: 1.1rem; }
+  .crane-lg { width: 38px; height: 38px; animation-delay: 0s; }
+  .crane-md { width: 28px; height: 28px; animation-delay: 0.7s; }
+  .crane-sm { width: 22px; height: 22px; animation-delay: 1.4s; }
 
   @keyframes craneFloat {
     0%, 100% { transform: translateY(0) rotate(-5deg); }
@@ -643,11 +646,38 @@
     color: #585b70;
     font-size: 1.5rem;
     z-index: 10;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
   }
+
+  .scroll-hint:hover,
+  .scroll-hint:focus-visible {
+    color: var(--rust-orange);
+    background: rgba(247, 76, 0, 0.08);
+    outline: none;
+  }
+
+  .scroll-hint:focus-visible {
+    box-shadow: 0 0 0 2px var(--rust-orange);
+  }
+
+  .scroll-hint:hover { animation-play-state: paused; }
 
   @keyframes bounce {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .scroll-hint { animation: none; }
   }
 
   /* ========== RESPONSIVE ========== */
@@ -662,6 +692,39 @@
 </style>
 </head>
 <body>
+
+<!-- Origami crane symbol (shared, inlined once) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="origami-crane" viewBox="-32 -50 104 104">
+      <ellipse cx="18" cy="33" rx="32" ry="1.8" fill="#0a3a4a" opacity="0.13"/>
+      <path fill="#7FD9EC" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 41.844 7.816 L 65.049 -24.669 L 36.181 3.201 Z"/>
+      <path fill="#B6EEF7" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 35.915 0.607 L 35.383 -5.579 L 11.704 -25.933 L 5.385 0.939 L 9.642 6.726 L 23.011 -5.38 Z"/>
+      <path fill="#007C9C" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 23.011 -5.38 L 10.593 8.623 L 9.642 6.726 Z"/>
+      <path fill="#007C9C" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 35.915 0.607 L 23.011 -5.38 L 35.649 2.735 Z"/>
+      <path fill="#7FD9EC" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M -14.4 -0.667 L -23.914 8.709 L -11 -0.09 Z"/>
+      <path fill="#00A2C5" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M -23.914 8.709 L -13.174 2.465 L -14.468 1.7 Z"/>
+      <path fill="#4BB3CF" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 10.776 7.993 L -10.953 -0.102 L -14.468 1.7 L 14.61 19.817 L 25.368 11.508 Z"/>
+      <path fill="#00A2C5" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 10.571 8.749 L 23.011 -5.38 L 37.419 3.952 Z"/>
+      <path fill="#007C9C" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 14.583 19.9 L 10.68 8.797 L 24.038 6.715 L 25.686 12.527 Z"/>
+      <path fill="#7FD9EC" stroke="#55C8DE" stroke-width="0.15" stroke-linejoin="round"
+            d="M 10.571 8.749 L 10 14 L 34.945 29.473 L 41.844 7.816 L 37.419 3.952 Z"/>
+      <path fill="none" stroke="#2D7F97" stroke-width="0.22" stroke-linecap="round" opacity="0.55"
+            d="M 23.011 -5.38 L 23.895 6.301 L 34.895 29.385"/>
+      <path fill="none" stroke="#2D7F97" stroke-width="0.22" stroke-linecap="round" opacity="0.55"
+            d="M 11.728 -26.032 L 20.312 -3.282"/>
+    </symbol>
+  </defs>
+</svg>
 
 <!-- ========== HERO ========== -->
 <section class="hero">
@@ -681,11 +744,11 @@
     <p class="subtitle-small">// based on real events. names have not been changed. the compiler doesn't care.</p>
   </div>
 
-  <div class="scroll-hint">↓</div>
+  <a href="#desk" class="scroll-hint" aria-label="Scroll to next section">↓</a>
 </section>
 
 <!-- ========== SCENE 1: THE DESK ========== -->
-<section class="scene desk-scene">
+<section id="desk" class="scene desk-scene">
   <h2 class="scene-title" style="color: var(--rust-orange);">The Natural Habitat</h2>
   <div class="desk-container">
     <div class="monitor">
@@ -729,9 +792,9 @@
 
     <!-- Origami -->
     <div class="origami-zone">
-      <span class="crane">🦢</span>
-      <span class="crane">🦢</span>
-      <span class="crane">🦢</span>
+      <svg class="crane crane-lg" aria-hidden="true" focusable="false"><use href="#origami-crane"/></svg>
+      <svg class="crane crane-md" aria-hidden="true" focusable="false"><use href="#origami-crane"/></svg>
+      <svg class="crane crane-sm" aria-hidden="true" focusable="false"><use href="#origami-crane"/></svg>
     </div>
 
     <div class="desk-surface"></div>
